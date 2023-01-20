@@ -47,10 +47,8 @@ train_index = np.random.choice(a, size = N_tr, replace = False)
 val_index = np.delete(a, train_index, axis=0)
 x_train = x_[train_index]
 y_train = y_[train_index]
-print(x_train.shape)
 x_val = x_[val_index][:]
 y_val = y_[val_index][:]
-print(x_val, y_val)
 x_m = x_train.mean(0)
 x_s = x_train.std(0)
 x_train = (x_train-x_m)/ x_s
@@ -90,7 +88,8 @@ plt.hist(torch.tensor(torch.stack(params_hmc)).T[1],density=True,bins=50)
 plt.show()
 
 
-pred_list, log_prob_list = hamiltorch.predict_model(net, x=x_val, y=y_val, samples=params_hmc[:], model_loss='multi_class_linear_output', tau_out=1., tau_list=tau_list)
+pred_list, log_prob_list = hamiltorch.predict_model(net, x=x_val, y=y_val, samples=params_hmc[2:], model_loss='multi_class_linear_output', tau_out=1., tau_list=tau_list)
+print(log_prob_list)
 _, pred = torch.max(pred_list, 2)
 acc = torch.zeros( len(pred_list)-1)
 nll = torch.zeros( len(pred_list)-1)
